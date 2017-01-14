@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "XM",
+  "short_name": "XM",
+  "description": "A short description",
+  "version": "0.15.1",
+  "minimum_chrome_version": "38",
+
+  "icons": {
+    "16": "assets/icon16.png",
+    "128": "assets/icon128.png"
+  },
+  "permissions": ["storage"],
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  }
+}

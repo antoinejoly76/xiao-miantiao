@@ -1,0 +1,10 @@
+亠	tou2	head	none	none	topmost part of an object	CHAR	none	PEOPLE	HUMAN BODY	HEAD	1	14
+交	jiao1	hand over	亠	symb[crossed legs] 父	to sleep together and make love	MAINCHAR	交付, 交流, 交换, 外交	PEOPLE	HUMAN BODY	HEAD	1a	14
+饺	jiao3	dumpling	交	食	food made with various ingredients	CHAR	饺子	PEOPLE	HUMAN BODY	HEAD	1b	15
+较	jiao4	compare	交	车	to compare various chars	CHAR	none	PEOPLE	HUMAN BODY	HEAD	1c	15
+校	xiao4	school	交	木	a wooden structure used for teaching	CHAR	none	PEOPLE	HUMAN BODY	HEAD	1d	15
+京	jing1	capital	亠	symb[struct building] 	a capital city with many buildings	MAINCHAR	none	PEOPLE	HUMAN BODY	HEAD	2	16
+凉	liang2	cool	京	冫	a large building as cool as ice	CHAR	凉快	PEOPLE	HUMAN BODY	HEAD	2a	17
+谅	liang4	forgive	京	讠	a high ranking person gives forgiveness verbally	CHAR	原谅	PEOPLE	HUMAN BODY	HEAD	2b	17
+景	jing3	sunshine	京	日	sun rising above a large building	CHAR	风景	PEOPLE	HUMAN BODY	HEAD	2c	17
+影	ying3	movie	景	彡	shadow of a large building	CHAR	none	PEOPLE	HUMAN BODY	HEAD	2d	17
