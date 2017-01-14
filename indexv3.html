@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8"/>
     <title>XiaoMiantiao v0.15</title>
-    
+
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
 <!--       <link rel="stylesheet" type="text/css" href="css/pure-min.css" media="screen"/>
    -->
 
     <link rel="stylesheet" type="text/css" href="css/style1.css" media="screen"/>
-  
+
     </script>
 </head>
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Logo</a>
+      <img src="../assets/XMlogo.png" class="brand-logo">Logo</img>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li id="addbutton"><a href="sass.html"><i class="material-icons left">add</i>New session</a></li>
         <li><a href="badges.html"><i class="material-icons left">save</i>Save session</a></li>
@@ -30,31 +30,43 @@
 
   <div class="container">
     <div class="row">
-      <div class="col s12 m6">
-        <h4 class="light">Card Action Options</h4>
+      <div class="col s12">
         <div class="card large">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="imghead" src="assets/header1.jpg">
+          <div class="card-image">
+              <img id="cardimage" class="center-align" src="assets/icon128.png">
           </div>
           <div class="card-content">
-           <h2 class="activator grey-text text-darken-4 flashcardtitle">面条</h2>
+           <h2 class="card-title activator grey-text text-darken-4">面条</h2>
+
          </div>
          <div class="card-reveal">
           <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></i></span>
           <p>Here is some more information about this product that is only revealed once clicked on.</p>
+<a class="waves-effect waves-light btn">button</a>
         </div>
 
         <div class="card-action">
-          <a class="yellow lighten-5 answerbutton waves-effect waves-orange btn indigo-text text-darken-4" href="# ">AGAIN</a>
-          <a class="yellow lighten-5 answerbutton waves-effect waves-orange btn indigo-text text-darken-2"href="#">POOR</a>
-          <a class="yellow lighten-5 answerbutton waves-effect waves-orange btn indigo-text text-darken-1"href="#">MEDIOCRE</a>
-          <a class="yellow lighten-5 answerbutton waves-effect waves-orange btn indigo-text"href="#">OK</a>
-          <a class="yellow lighten-5 answerbutton waves-effect waves-orange btn indigo-text text-lighten-2"href="#">GOOD</a>
-          <a class="yellow lighten-5 answerbutton waves-effect waves-orange btn indigo-text text-lighten-4"href="#">EASY</a>
+      <p><a class="activator" href="#">REVEAL CARD</a></p>
         </div>
       </div>
     </div>
-
+      <!-- <div class="col s7 offset-s1">
+    <ul class="collapsible" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header teal"><i class="material-icons">filter_drama</i>First</div>
+        <div class="collapsible-body teal lighten-3"><p>Lorem ipsum dolor sit amet.</p></div>
+      </li>
+      <li>
+        <div class="collapsible-header teal"><i class="material-icons">place</i>Second</div>
+        <div class="collapsible-body teal lighten-3"><p>Lorem ipsum dolor sit amet.</p></div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+        <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+      </li>
+    </ul>
+  </div> -->
+  </div>
 
 
  <!--    <div class="row">
@@ -66,69 +78,35 @@
        </div>
      </div>
  </div> -->
- <div class="row">
- <div class="col s8 offset-s1">
-   <a class="yellow lighten-5 indigo-text text-darken-4 waves-effect waves-light btn">AGAIN</a>
-   <a class="yellow lighten-5 indigo-text text-darken-2 waves-effect waves-light btn">POOR</a>
-   <a class="yellow lighten-5 indigo-text text-darken-1 waves-effect waves-light btn">MEDIOCRE</a>
-   <a class="yellow lighten-5 indigo-text waves-effect waves-light btn">OK</a>
-   <a class="yellow lighten-5 indigo-text text-lighten-2 waves-effect waves-light btn">button</a>
-   <a class="yellow lighten-5 indigo-text text-lighten-4 waves-effect waves-light btn">button</a>
- </div>
-</div>
 
-<a class="waves-effect waves-light btn">button</a>
-<div class="pure-g choicepanel">
-    <div class="pure-u-1-6 ansdiv">
-     <button id="answer0" class="buttonfx pure-button col0">Again</button>
-    </div>
-      <div class="pure-u-1-6 ansdiv">
-     <button id="answer1" class="pure-button buttonfx col1">Poor</button>
-    </div>
-      <div class="pure-u-1-6 ansdiv">
-       <button id="answer2" class="pure-button buttonfx col2">Mediocre</button>
+
+     <div class="fixed-action-btn toolbar">
+       <a class="btn-floating btn-large red">
+         <i class="large material-icons">mode_comment</i>
+       </a>
+       <ul>
+         <li class="waves-effect waves-light"><a href="#!"><i class="material-icons">looks_one</i></a></li>
+         <li class="waves-effect waves-light"><a href="#!"><i class="material-icons">looks_two</i></a></li>
+         <li class="waves-effect waves-light"><a href="#!"><i class="material-icons">looks_3</i></a></li>
+         <li class="waves-effect waves-light"><a href="#!"><i class="material-icons">looks_4</i></a></li>
+         <li class="waves-effect waves-light"><a href="#!"><i class="material-icons">looks_5</i></a></li>
+         <li class="waves-effect waves-light"><a href="#!"><i class="material-icons">looks_6</i></a></li>
+
+       </ul>
      </div>
-     <div class="pure-u-1-6 ansdiv">
-      <button id="answer3" class="pure-button buttonfx col3">OK</button>
-    </div>
-    <div class="pure-u-1-6 ansdiv">
-     <button id="answer4" class="pure-button buttonfx col4">Good</button>
-   </div>
-   <div class="pure-u-1-6 ansdiv">
-     <button id="answer5" class="pure-button buttonfx col5">Easy</button>
-   </div>
- </div>
 
-<div class="pure-g">
-<div class="pure-u-1-1 menucharclass">
-    <div id="charsmenu"></div>
-  </div>
+
 </div>
 
-  <ul class="collapsible" data-collapsible="accordion">
-    <li>
-      <div class="collapsible-header cyan"><i class="material-icons">filter_drama</i>First</div>
-      <div class="collapsible-body cyan lighten-3"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-    <li>
-      <div class="collapsible-header cyan"><i class="material-icons">place</i>Second</div>
-      <div class="collapsible-body cyan lighten-3"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-    <li>
-      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>    
-    <li>
-      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-  </ul>
-        
+
+
+
+
 <!-- <div class="pure-g" id="details">
   <div class="pure-u-1-3 panel">
     <div id="characters">
       <div class="panel1 panelheader"> Characters</div>
-  
+
     <div id="panelcontent1"> Characters</div>
       </div>
   </div>
@@ -145,20 +123,4 @@
  </div> -->
 
 
-<div class="pure-g" >
-<br>
-    <div class="pure-u-1-1" id="debug"></div>
-    <div class="pure-u-1-1" id="statusbar"></div>
-</div> -->
-
-
-</div>
 </body>
-
-<footer class="page-footer">
-  <div class="footer-copyright">
-    <div class="container">
-      © 2016 Copyright Antoine Joly - V 0.15.1
-    </div>
-  </div>
-</footer>

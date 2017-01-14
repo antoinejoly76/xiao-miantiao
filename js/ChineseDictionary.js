@@ -15,19 +15,19 @@
 // Registering events for various buttons
 
 window.onload = function() {
-    document.getElementById("addbutton").addEventListener("click",initDic);
-    document.getElementById("savebutton").addEventListener("click", saveSession);
-    document.getElementById("loadbutton").addEventListener("click", loadSession);
-    document.getElementById("nextSession").addEventListener("click", initNewSession);
-    document.getElementById("frontcard").addEventListener("click", UI_switchCard);
- /*   document.getElementById("chartobreak").addEventListener("click", UI_printKP);*/
-    document.getElementById("answer0").addEventListener("click", function() {UIUpdate(0);});
-    document.getElementById("answer1").addEventListener("click", function() {UIUpdate(1);});
-    document.getElementById("answer2").addEventListener("click", function() {UIUpdate(2);});
-    document.getElementById("answer3").addEventListener("click", function() {UIUpdate(3);});
-    document.getElementById("answer4").addEventListener("click", function() {UIUpdate(4);});
-    document.getElementById("answer5").addEventListener("click", function() {UIUpdate(5);});
-
+  //   document.getElementById("addbutton").addEventListener("click",initDic);
+  //   document.getElementById("savebutton").addEventListener("click", saveSession);
+  //   document.getElementById("loadbutton").addEventListener("click", loadSession);
+  //   document.getElementById("nextSession").addEventListener("click", initNewSession);
+  //   document.getElementById("frontcard").addEventListener("click", UI_switchCard);
+  //  document.getElementById("chartobreak").addEventListener("click", UI_printKP);
+  //   document.getElementById("answer0").addEventListener("click", function() {UIUpdate(0);});
+  //   document.getElementById("answer1").addEventListener("click", function() {UIUpdate(1);});
+  //   document.getElementById("answer2").addEventListener("click", function() {UIUpdate(2);});
+  //   document.getElementById("answer3").addEventListener("click", function() {UIUpdate(3);});
+  //   document.getElementById("answer4").addEventListener("click", function() {UIUpdate(4);});
+  //   document.getElementById("answer5").addEventListener("click", function() {UIUpdate(5);});
+    UI_getRandomChinaPic() ;
 
 
 };
@@ -44,8 +44,8 @@ function ChineseDictionary() {
 ChineseDictionary.prototype = {
 
 // initArray1 loads a CSV file with tabbed columns and according to the dictype
-// parameter fills the right associative array of ChineseDictionary object see above. 
-// the calls to XMLHttpRequest are asynchronous  and therefore a callback function is 
+// parameter fills the right associative array of ChineseDictionary object see above.
+// the calls to XMLHttpRequest are asynchronous  and therefore a callback function is
 // used, only after the third call to initArray1 has been made (i.e all three tables have been initiated)
 
 initArray1: function (this_file, dictype, callback) {
@@ -108,15 +108,15 @@ initArray1: function (this_file, dictype, callback) {
             this.arrayKP = obj_temp;
         }
 
-              if(Object.keys(this.arrayWords).length > 0 && Object.keys(this.arrayCharacters).length > 0 && Object.keys(this.arrayKP).length > 0) {//everything has been done and therefore the initPostLoad method can be 
-                // called 
+              if(Object.keys(this.arrayWords).length > 0 && Object.keys(this.arrayCharacters).length > 0 && Object.keys(this.arrayKP).length > 0) {//everything has been done and therefore the initPostLoad method can be
+                // called
 
                 callback();
             }
 
 
         } else console.log("Did not work");
-  }}.bind(this); // necessary to bind this to the scope of ChineseDictionary 
+  }}.bind(this); // necessary to bind this to the scope of ChineseDictionary
   //@TODO verify that bind is necessary
 
 
@@ -513,7 +513,7 @@ CharacterKP.prototype = {
     getComponent2Obj: function () {
         return this.component2Obj;
     },
-    
+
     getCat1: function () {
         return this.cat1;
     },
@@ -667,8 +667,8 @@ function saveSession() {
 
 function loadSession() {
     var ind=0;  //Reload all the objects and prototypes
-    
-    //Chinese Dictionary 
+
+    //Chinese Dictionary
     chrome.storage.local.get("dic", function(data) {
         dic1 = data.dic
         dic1.__proto__ = ChineseDictionary.prototype;
@@ -690,7 +690,7 @@ function loadSession() {
 
 
     //Decks
-    
+
     chrome.storage.local.get("ds", function(data) {
         deckSession = data.ds;
         deckSession.__proto__ = DeckofCards.prototype;
@@ -809,12 +809,12 @@ function UI_displayChars_menu(Word1) {
 
 
 function func(item)
-{  
+{
    item.setAttribute("style", "background-color:blue;")
 }
 
 function func1(item)
-{  
+{
    item.setAttribute("style", "background-color:green;")
 }
 
@@ -849,7 +849,7 @@ function UI_displayChar(charactertext1) {
 function UI_displayWordsWithChar(char) {
     var wordtemp = deckSession.getCurrentWord();
     var listofWords = dic1.getWordsWithGivenCharacter(char);
- /*  
+ /*
 @01012017 this has been transferred to the function getWordsWithGivenCharacter as it should not be in a UI function
   var index = listofWords.indexOf(wordtemp);
     listofWords.splice(index, 1);*/
@@ -944,3 +944,8 @@ function UI_printKP() {
     /*    var str = dic1.getCharacterKP(char1).print();*/
     document.querySelector("#resultBreak").innerHTML = UI_displayBreakdownChar(dic1.getCharacterKP(char1));
 }
+
+function UI_getRandomChinaPic() {
+         var rnd = Math.floor(Math.random() * 8)+1;
+         document.getElementById('cardimage').src="../assets/china"+rnd+".png";
+ }

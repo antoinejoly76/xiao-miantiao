@@ -34,9 +34,7 @@
   font-feature-settings: 'liga';
 }
 
-.panelchar {
-}
-
+.
 .answerbutton {
    padding: 0 1rem;
 }
@@ -46,10 +44,23 @@
 
 .flashcardtitle {
   font-size: 5em;
+  vertical-align: middle;
 }
 .flashcardpanel {
-      min-width: 100%;
+      min-width: 80%;
 }
+.content1 {
+    min-height: 70%;
+    display: flex;
+ align-items: center;
+ justify-content: center;
+    background-color: blue;
+}
+.container1 {
+  min-height: 100%;
+  text-align: center;
+}
+
 
 /*body {
     text-align: center;
@@ -121,11 +132,11 @@ span:hover {
 }
 
 .col5 {
-  background: rgb(28, 184, 65); /* this is a green 
+  background: rgb(28, 184, 65); /* this is a green
 }
 
 .col0 {
-  background: rgb(202, 60, 60); /* this is a maroon 
+  background: rgb(202, 60, 60); /* this is a maroon
 }
 
 .col1 {
@@ -141,11 +152,11 @@ span:hover {
 }
 
 .col2{
-  background: rgb(223, 117, 20); /* this is an orange 
+  background: rgb(223, 117, 20); /* this is an orange
 }
 
 .button-secondary {
-  background: rgb(66, 184, 221); /* this is a light blue 
+  background: rgb(66, 184, 221); /* this is a light blue
 }
 .panelheader {
   font-size: 2em;
@@ -159,7 +170,7 @@ span:hover {
 
 .charpanel {
     width: 70%;
-    margin: 0 auto; 
+    margin: 0 auto;
     text-align: center;
     height: 340px;
     max-width: 700px;;
@@ -169,7 +180,7 @@ span:hover {
   font-size: 2em;
   font-weight: bold;
   border-radius: 2px;
-   
+
 }
 
 
@@ -197,11 +208,11 @@ table.charinfo th {
 }
 .choicepanel {
       width: 70%;
-    margin: 0 auto; 
+    margin: 0 auto;
     text-align: center;
     max-width: 700px;;
 }
- front pane, placed above back 
+ front pane, placed above back
 .container {
   text-align: center;
     position: relative;
