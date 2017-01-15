@@ -3835,7 +3835,8 @@ $(document).ready(function(){
 
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
-        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
+        // Added .card-back class reference to be able to go back to card front without having to use the format of .card-title
+        if ($(e.target).is($('.card-reveal .card-title .card-back')) || $(e.target).is($('.card-reveal .card-title i'))) {
           // Make Reveal animate down and display none
           $(this).find('.card-reveal').velocity(
             {translateY: 0}, {
