@@ -15,18 +15,18 @@
 // Registering events for various buttons
 
 window.onload = function() {
-  //   document.getElementById("addbutton").addEventListener("click",initDic);
-  //   document.getElementById("savebutton").addEventListener("click", saveSession);
-  //   document.getElementById("loadbutton").addEventListener("click", loadSession);
-  //   document.getElementById("nextSession").addEventListener("click", initNewSession);
+     document.getElementById("addbutton").addEventListener("click",SH_initDic);
+    document.getElementById("saveSession").addEventListener("click", saveSession);
+     document.getElementById("loadSession").addEventListener("click", loadSession);
+     document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
   //   document.getElementById("frontcard").addEventListener("click", UI_switchCard);
   //  document.getElementById("chartobreak").addEventListener("click", UI_printKP);
-  //   document.getElementById("answer0").addEventListener("click", function() {UIUpdate(0);});
-  //   document.getElementById("answer1").addEventListener("click", function() {UIUpdate(1);});
-  //   document.getElementById("answer2").addEventListener("click", function() {UIUpdate(2);});
-  //   document.getElementById("answer3").addEventListener("click", function() {UIUpdate(3);});
-  //   document.getElementById("answer4").addEventListener("click", function() {UIUpdate(4);});
-  //   document.getElementById("answer5").addEventListener("click", function() {UIUpdate(5);});
+    document.getElementById("answer0").addEventListener("click", function() {SH_movetoNextWord(0);});
+    document.getElementById("answer1").addEventListener("click", function() {SH_movetoNextWord(1);});
+    document.getElementById("answer2").addEventListener("click", function() {SH_movetoNextWord(2);});
+   document.getElementById("answer3").addEventListener("click", function() {SH_movetoNextWord(3);});
+    document.getElementById("answer4").addEventListener("click", function() {SH_movetoNextWord(4);});
+    document.getElementById("answer5").addEventListener("click", function() {SH_movetoNextWord(5);});
     UI_getRandomChinaPic() ;
 
 
@@ -318,6 +318,9 @@ DeckofCards.prototype = {
         return this.numberOfCardsPerSession;
     },
 
+    hasCardsRemaining: function() {
+      return (!this.getNumberOfWords() == 0);
+    },
 
     allocateCardsforNextSession: function (dic1, deck) {
         var wordtemp = {};
@@ -554,91 +557,71 @@ var deckRemainingCharacters = {};
 var deckSession = {};
 var stats = {};
 
-function initDic() {
+function SH_initDic() {
 
     dic1 = new ChineseDictionary("test", "L3"); // Force HSK 3 for now
-    dic1.initArray1("HSK3.txt", "Words", initPostLoad);
-    dic1.initArray1("characters.txt", "Characters", initPostLoad);
-    dic1.initArray1("KP.txt", "KP", initPostLoad);
+    dic1.initArray1("HSK3.txt", "Words", SH_initPostLoad);
+    dic1.initArray1("characters.txt", "Characters", SH_initPostLoad);
+    dic1.initArray1("KP.txt", "KP", SH_initPostLoad);
 
 
 }
 
 
-function initPostLoad() {
+function SH_initPostLoad() {
     dic1.setKPComponents(); // link a KP character to his KP components
     deckRemainingCharacters = new DeckofCards(dic1, -1);
     deckSession = new DeckofCards(deckRemainingCharacters, 4);
     stats = new RecordsStats(dic1);
-    UIUpdate(-1);
+    SH_initNewSession();
     UI_logStatusBar("New deck generated successfully")
 }
-function initNewSession() {
+function SH_initNewSession() {
     deckSession.allocateCardsforNextSession(dic1, deckRemainingCharacters);
     stats.resetSessionStats();
-    UIUpdate(-1);
+    wordtemp = deckSession.getCurrentWord();
+    wordtemp.addEncounter();
+    UI_Update();
     UI_logStatusBar("Next session initiated successfully");
 }
 
-function UIUpdate(status) {
-    wordtemp = deckSession.getCurrentWord();
-    /* This is the update part of the Word and Deck objects */
+function SH_movetoNextWord(status) {
+        // wordtemp = deckSession.getCurrentWord();
+        var oldEF = wordtemp.getEF();
+        wordtemp.updateEF(status);
+        wordtemp.updateInt();
 
-    switch (status) {
-        case -1: //special case for beginning of session
+        stats.updateCurrentSession(wordtemp);
+        stats.updateEncountered(wordtemp, oldEF);
 
+        deckSession.removeWord(wordtemp);
+
+        if (!deckSession.hasCardsRemaining()) {
+              UI_EndSession();
+        } else {
+            wordtemp = deckSession.moveToNextWord();
+            wordtemp = deckSession.getCurrentWord();
             wordtemp.addEncounter(); // here we update n and nbOfEncounters
-            break;
-            default:
-
-            var oldEF = wordtemp.getEF();
-            wordtemp.updateEF(status);
-            wordtemp.updateInt();
-
-            stats.updateCurrentSession(wordtemp);
-            stats.updateEncountered(wordtemp, oldEF);
-
-            deckSession.removeWord(wordtemp);
-            if (deckSession.getNumberOfWords() == 0) {
-                document.querySelector("#table").innerHTML = "END OF THIS SESSION";
-            } else {
-                wordtemp = deckSession.moveToNextWord();
-                wordtemp = deckSession.getCurrentWord();
-                wordtemp.addEncounter(); // here we update n and nbOfEncounters
-            }
-
-            break;
         }
+        UI_Update();
 
+}
 
-        /* this is the UI update part */
+function UI_EndSession() {
+  document.querySelector("#table").innerHTML = "END OF THIS SESSION";
+}
 
-    // word is a Word object
-    if (deckSession.getNumberOfWords() == 0) {
-        document.querySelector("#table").innerHTML = "END";
+function UI_Update() {
+      document.querySelector("#logo").click();
+    if (!deckSession.hasCardsRemaining()) {
         document.querySelector("#nextSession").disabled = false;
     } else {
         document.querySelector("#table").innerHTML = wordtemp.getWord();
+        document.querySelector("#answer").innerHTML = wordtemp.getWord();
+        document.querySelector("#pinyin").innerHTML = wordtemp.getPinyin();
+        document.querySelector("#translation").innerHTML = wordtemp.getTranslation();
         document.querySelector("#nextSession").disabled = true;
-        UI_switchCardBackToFront();
-
-
     }
-
- /*   document.querySelector("#debug").innerHTML = deckSession.getCardIndex() + "/" + deckSession.getNumberOfWords()+"<br>";
-    document.querySelector("#debug").innerHTML += wordtemp.getHSKLevel()+"<br>";
-    document.querySelector("#debug").innerHTML += "EF: " + wordtemp.getEF() + " - IF: " + wordtemp.getIF()+"<br>";
-    document.querySelector("#debug").innerHTML += "DeckRemaining :" + deckRemainingCharacters.getNumberOfWords() +"<br>";
-    document.querySelector("#debug").innerHTML += "DeckCurrent:" + deckSession.getNumberOfWords() + "<br>";
-    document.querySelector("#debug").innerHTML += "Stats Sesssion: Mastered: " + stats.MasteredPcSession + " - Good: " + stats.GoodPcSession + " - Session: "  + stats.NbCardsSession+"<br>";
-    document.querySelector("#debug").innerHTML += "Stats Encountered: Mastered: " + stats.MasteredPcEncountered + " - Good: " + stats.GoodPcEncountered + " - Total "  + stats.Encountered;
-
-
-    document.querySelector("#character").innerHTML = UI_displayChar(wordtemp);
-    var listofChars = wordtemp.characters;
-    listofChars.forEach(function(element) {
-        document.querySelector("#character").innerHTML += UI_displayWordsWithChar(element);
-    });*/
 }
 
 
@@ -684,7 +667,7 @@ function loadSession() {
 
         ind++;
         if (ind == 5) {
-          initNewSession();
+          SH_initNewSession();
           UI_logStatusBar("Progress saved successfully - " + lastsavedate[date]);
       }});
 
@@ -699,7 +682,7 @@ function loadSession() {
         deckSession.currentword = deckSession.listofcards[deckSession.index];
         ind++;
         if (ind == 5) {
-          initNewSession();
+          SH_initNewSession();
           UI_logStatusBar("Progress saved successfully - " + llastsavedate[date]);
       }});
 
@@ -713,7 +696,7 @@ function loadSession() {
         deckRemainingCharacters.currentword = deckRemainingCharacters.listofcards[deckRemainingCharacters.index];
         ind++;
         if (ind == 5) {
-          initNewSession();
+          SH_initNewSession();
           UI_logStatusBar("Progress saved successfully - " + lastsavedate[date]);
       }});
 
@@ -727,7 +710,7 @@ chrome.storage.local.get("st", function(data) {
     stats.__proto__ = RecordsStats.prototype;
     ind++;
     if (ind == 5) {
-      initNewSession();
+      SH_initNewSession();
       UI_logStatusBar("Progress saved successfully - " + lastsavedate[date]);
   }});
 
@@ -735,36 +718,36 @@ chrome.storage.local.get("st", function(data) {
 chrome.storage.local.get("date", function(data) {
     ind++;
     if (ind == 5) {
-      initNewSession();
+      SH_initNewSession();
       UI_logStatusBar("Progress saved successfully - " + data.date);
   }});
 }
-
-function UI_switchCard() {
-    wordtemp = deckSession.getCurrentWord();
-    var NAME = document.getElementById("table");
-    var currentClass = NAME.className;
-    if (currentClass == "front") { // Check the current class name
-       NAME.className = "back";
-       var strtemp = UI_displayChars_answer(wordtemp);
-       document.querySelector("#table").innerHTML =  strtemp;
-       strtemp = UI_displayChars_menu(wordtemp);
-        document.querySelector("#charsmenu").innerHTML = strtemp;
-    var charmenuitems = document.getElementsByClassName('pure-menu-link');
-    var item = null;
-    var chartext = ""
-    for (var i = 0; i < charmenuitems.length; i++) {
-          item = document.getElementById("charmenu"+i);
-         item.addEventListener("click", function () {
-            UI_showCharDetails(this.innerHTML);});
-}
-   } else {
-      NAME.className = "front";
-      document.querySelector("#table").innerHTML = wordtemp.getWord();
-  }
-
-
-}
+//
+// function UI_switchCard() {
+//     wordtemp = deckSession.getCurrentWord();
+//     var NAME = document.getElementById("table");
+//     var currentClass = NAME.className;
+//     if (currentClass == "front") { // Check the current class name
+//        NAME.className = "back";
+//        var strtemp = UI_displayChars_answer(wordtemp);
+//        document.querySelector("#table").innerHTML =  strtemp;
+//        strtemp = UI_displayChars_menu(wordtemp);
+//         document.querySelector("#charsmenu").innerHTML = strtemp;
+//     var charmenuitems = document.getElementsByClassName('pure-menu-link');
+//     var item = null;
+//     var chartext = ""
+//     for (var i = 0; i < charmenuitems.length; i++) {
+//           item = document.getElementById("charmenu"+i);
+//          item.addEventListener("click", function () {
+//             UI_showCharDetails(this.innerHTML);});
+// }
+//    } else {
+//       NAME.className = "front";
+//       document.querySelector("#table").innerHTML = wordtemp.getWord();
+//   }
+//
+//
+// }
 
 function UI_showCharDetails(chartext1) {
      document.getElementById("panelcontent1").innerHTML = UI_displayChar(chartext1);
@@ -930,14 +913,14 @@ function addCharstoTable(charKP, array, index) {
 }
 
 function UI_logStatusBar(string1) {
-    document.querySelector("#statusbar").innerHTML = new Date().toUTCString() + " - " + string1;
+    Materialize.toast(new Date().toUTCString() + " - " + string1, 4000);
 }
 
-function UI_switchCardBackToFront() {
-    var NAME = document.getElementById("table");
-    var currentClass = NAME.className;
-    NAME.className = "front";
-}
+// function UI_switchCardBackToFront() {
+//     var NAME = document.getElementById("table");
+//     var currentClass = NAME.className;
+//     NAME.className = "front";
+// }
 
 function UI_printKP() {
     var char1 = document.querySelector("#chartobreak").value;
