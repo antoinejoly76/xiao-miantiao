@@ -3,12 +3,11 @@
   "name": "XM",
   "short_name": "XM",
   "description": "A short description",
-  "version": "0.15.1",
+  "version": "0.20",
   "minimum_chrome_version": "38",
 
   "icons": {
-    "16": "assets/icon16.png",
-    "128": "assets/icon128.png"
+    "128": "assets/XMlogo.png"
   },
   "permissions": ["storage"],
   "app": {

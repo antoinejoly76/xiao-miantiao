@@ -4396,7 +4396,7 @@ $(document).ready(function(){
 
         $(document).on('click.fabToolbarClose', function(e) {
           if (!$(e.target).closest(menu).length) {
-            toolbarToFAB(btn);
+            // toolbarToFAB(btn); @AJ hack so the toolbar never closes
             $(window).off('scroll.fabToolbarClose');
             $(document).off('click.fabToolbarClose');
           }

@@ -27,6 +27,8 @@ window.onload = function() {
    document.getElementById("answer3").addEventListener("click", function() {SH_movetoNextWord(3);});
     document.getElementById("answer4").addEventListener("click", function() {SH_movetoNextWord(4);});
     document.getElementById("answer5").addEventListener("click", function() {SH_movetoNextWord(5);});
+   document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
+      $('.fixed-action-btn.toolbar').openToolbar();
     UI_getRandomChinaPic() ;
 
 
@@ -581,7 +583,7 @@ function SH_initDic() {
 function SH_initPostLoad() {
     dic1.setKPComponents(); // link a KP character to his KP components
     deckRemainingCharacters = new DeckofCards(dic1, -1);
-    deckSession = new DeckofCards(deckRemainingCharacters, 4);
+    deckSession = new DeckofCards(deckRemainingCharacters, 30);
     stats = new RecordsStats(dic1);
     SH_initNewSession();
     UI_logStatusBar("New deck generated successfully")
@@ -630,6 +632,8 @@ function UI_Update() {
         document.querySelector("#pinyin").innerHTML = wordtemp.getPinyin();
         document.querySelector("#translation").innerHTML = wordtemp.getTranslation();
         document.querySelector("#nextSession").disabled = true;
+        document.querySelector("#EF").innerHTML = wordtemp.getEF();
+        document.querySelector("#IF").innerHTML = wordtemp.getIF();
     }
       document.querySelector("#countans0").innerHTML = stats.getnbAnswersPerScore(0);
       document.querySelector("#countans1").innerHTML = stats.getnbAnswersPerScore(1);
