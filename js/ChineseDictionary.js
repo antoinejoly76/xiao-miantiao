@@ -36,7 +36,7 @@ window.onload = function() {
 function ChineseDictionary() {
     this.arrayWords = {}; // contains all the Words Objects. the key is a String representation of the word.
     this.arrayCharacters = {}; // contains all the Characters Objects. the key is a character representation of the characters
-    this.arrayKP = {} // contains the KP Objects loosely based on the Chracters Class.  @TODO make the KP class inherit from the Characer class to simplify code
+    this.arrayKP = {}; // contains the KP Objects loosely based on the Chracters Class.  @TODO make the KP class inherit from the Characer class to simplify code
 }
 
 /* Prototype Chinese Dictionary */
@@ -202,57 +202,67 @@ getCharacter: function (char1) {
 /* Class RecordsStats */
 
 function RecordsStats(dic1) {
-    this.MasteredPcSession = 0,
-    this.GoodPcSession = 0,
-    this.NbCardsSession = 0,
-    this.MasteredPcEncountered = 0,
-    this.GoodPcEncountered = 0,
-    this.Encountered = 0,
-    this.MasteredPcTotal = 0,
-    this.GoodPcTotal = 0,
-    this.TotalCards = 0
+   this.Session = {};
+   this.Encountered = {};
+   this.Total = {};
+    // this.MasteredPcSession = 0,
+    // this.GoodPcSession = 0,
+    // this.NbCardsSession = 0,
+    // this.MasteredPcEncountered = 0,
+    // this.GoodPcEncountered = 0,
+    // this.Encountered = 0,
+    // this.MasteredPcTotal = 0,
+    // this.GoodPcTotal = 0,
+    // this.TotalCards = 0
 }
 
 RecordsStats.prototype = {
+
     resetSessionStats: function () {
-        this.MasteredPcSession = 0;
-        this.GoodPcSession = 0;
-        this.NbCardsSession = 0
+          for (var i = 0; i < 6; i++)
+            this.Session[i] = 0;
+          this.Session.nbCards=0;
     },
 
-    updateCurrentSession: function (word) {
-        if (word.getEF() >= 3.0) {
-            this.MasteredPcSession++;
-        } else if (word.getEF() >= 2.5) {
-            this.GoodPcSession++;
-        }
-        this.NbCardsSession++;
+    updateCurrentSession: function (answer) {
+        this.Session[answer]++;
+        this.Session.nbCards++;
     },
 
+    getnbAnswersPerScore: function (answer) {
+      var nb =   this.Session[answer];
+      if (nb > 0) return nb;
+      else return "";
+    },
 
-    updateEncountered: function (word, previousEF) {
-        if (word.getNumberOfEncounters() == 1) {
-            this.Encountered++;
-
-            if (word.getEF() >= 3.0) {
-                this.MasteredPcEncountered++;
-            } else if (word.getEF() >= 2.5) {
-                this.GoodPcEncountered++;
-            }
-        } else {
-
-            if (word.getEF() >= 3.0) {
-                this.MasteredPcEncountered++;
-            } else if (word.getEF() >= 2.5) {
-                this.GoodPcEncountered++;
-            }
-            if (previousEF >= 3.0) {
-                this.MasteredPcEncountered--;
-            } else if (previousEF >= 2.5) {
-                this.GoodPcEncountered--;
-            }
-        }
+    getnbCardsSession: function (answer) {
+      return this.Session.nbCards;
     }
+
+
+    // updateEncountered: function (word, previousEF) {
+    //     if (word.getNumberOfEncounters() == 1) {
+    //         this.Encountered++;
+    //
+    //         if (word.getEF() >= 3.0) {
+    //             this.MasteredPcEncountered++;
+    //         } else if (word.getEF() >= 2.5) {
+    //             this.GoodPcEncountered++;
+    //         }
+    //     } else {
+    //
+    //         if (word.getEF() >= 3.0) {
+    //             this.MasteredPcEncountered++;
+    //         } else if (word.getEF() >= 2.5) {
+    //             this.GoodPcEncountered++;
+    //         }
+    //         if (previousEF >= 3.0) {
+    //             this.MasteredPcEncountered--;
+    //         } else if (previousEF >= 2.5) {
+    //             this.GoodPcEncountered--;
+    //         }
+    //     }
+    // }
 
 };
 /* Class DeckOfCards */
@@ -591,8 +601,8 @@ function SH_movetoNextWord(status) {
         wordtemp.updateEF(status);
         wordtemp.updateInt();
 
-        stats.updateCurrentSession(wordtemp);
-        stats.updateEncountered(wordtemp, oldEF);
+        stats.updateCurrentSession(status);
+        // stats.updateEncountered(wordtemp, oldEF);
 
         deckSession.removeWord(wordtemp);
 
@@ -612,7 +622,6 @@ function UI_EndSession() {
 }
 
 function UI_Update() {
-      document.querySelector("#logo").click();
     if (!deckSession.hasCardsRemaining()) {
         document.querySelector("#nextSession").disabled = false;
     } else {
@@ -622,6 +631,12 @@ function UI_Update() {
         document.querySelector("#translation").innerHTML = wordtemp.getTranslation();
         document.querySelector("#nextSession").disabled = true;
     }
+      document.querySelector("#countans0").innerHTML = stats.getnbAnswersPerScore(0);
+      document.querySelector("#countans1").innerHTML = stats.getnbAnswersPerScore(1);
+      document.querySelector("#countans2").innerHTML = stats.getnbAnswersPerScore(2);
+      document.querySelector("#countans3").innerHTML = stats.getnbAnswersPerScore(3);
+      document.querySelector("#countans4").innerHTML = stats.getnbAnswersPerScore(4);
+      document.querySelector("#countans5").innerHTML = stats.getnbAnswersPerScore(5);
 }
 
 
@@ -653,7 +668,7 @@ function loadSession() {
 
     //Chinese Dictionary
     chrome.storage.local.get("dic", function(data) {
-        dic1 = data.dic
+        dic1 = data.dic;
         dic1.__proto__ = ChineseDictionary.prototype;
 
         for (var keys in dic1.arrayWords)
@@ -722,32 +737,7 @@ chrome.storage.local.get("date", function(data) {
       UI_logStatusBar("Progress saved successfully - " + data.date);
   }});
 }
-//
-// function UI_switchCard() {
-//     wordtemp = deckSession.getCurrentWord();
-//     var NAME = document.getElementById("table");
-//     var currentClass = NAME.className;
-//     if (currentClass == "front") { // Check the current class name
-//        NAME.className = "back";
-//        var strtemp = UI_displayChars_answer(wordtemp);
-//        document.querySelector("#table").innerHTML =  strtemp;
-//        strtemp = UI_displayChars_menu(wordtemp);
-//         document.querySelector("#charsmenu").innerHTML = strtemp;
-//     var charmenuitems = document.getElementsByClassName('pure-menu-link');
-//     var item = null;
-//     var chartext = ""
-//     for (var i = 0; i < charmenuitems.length; i++) {
-//           item = document.getElementById("charmenu"+i);
-//          item.addEventListener("click", function () {
-//             UI_showCharDetails(this.innerHTML);});
-// }
-//    } else {
-//       NAME.className = "front";
-//       document.querySelector("#table").innerHTML = wordtemp.getWord();
-//   }
-//
-//
-// }
+
 
 function UI_showCharDetails(chartext1) {
      document.getElementById("panelcontent1").innerHTML = UI_displayChar(chartext1);
@@ -790,16 +780,6 @@ function UI_displayChars_menu(Word1) {
     return strInner;
 }
 
-
-function func(item)
-{
-   item.setAttribute("style", "background-color:blue;")
-}
-
-function func1(item)
-{
-   item.setAttribute("style", "background-color:green;")
-}
 
 function UI_displayChar(charactertext1) {
     wordtemp = deckSession.getCurrentWord();
