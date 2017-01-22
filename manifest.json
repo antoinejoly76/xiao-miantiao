@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "XM",
+  "name": "XiaoMiantiao",
   "short_name": "XM",
   "description": "A short description",
-  "version": "0.20",
+  "version": "0.20.1",
   "minimum_chrome_version": "38",
 
   "icons": {

@@ -34,6 +34,11 @@ window.onload = function() {
 
 };
 
+
+Number.prototype.round = function(decimals) { //get a function to round at 2 decimals - @R0.20.1
+    return Number((Math.round(this + "e" + decimals)  + "e-" + decimals));
+};
+
 // Class Chinese Dictionary
 function ChineseDictionary() {
     this.arrayWords = {}; // contains all the Words Objects. the key is a String representation of the word.
@@ -341,6 +346,7 @@ DeckofCards.prototype = {
             if (dic1.arrayWords[keys].getNumberOfEncounters() > 0) {
                 if (dic1.arrayWords[keys].getIF() == 1) {
                     this.addWord(dic1.arrayWords[keys]);
+                    deck.removeWord(wordtemp); //Fix to prevent same word to appear twice in a session - @R0.20.1
                 } else {
                     dic1.arrayWords[keys].diminishIF()
                 }
@@ -372,6 +378,7 @@ function Word(word, pinyin, translation, HSKlevel) {
     this.easinessFactor = 2.5;
     this.n = 0;
     this.intervalFactor = 1;
+    this.lastintervalFactor = 1;
     this.characters = [];
     this.addCharacters();
 }
@@ -423,15 +430,21 @@ Word.prototype = {
             this.intervalFactor = 4;
         else
             this.intervalFactor = this.intervalFactor * this.easinessFactor;
+            this.lastintervalFactor = this.intervalFactor;
     },
 
     getEF: function () {
-        return this.easinessFactor;
+        return this.easinessFactor.round(1); //Round EF to one decimal- @R0.20.1
     },
 
     getIF: function () {
         return Math.floor(this.intervalFactor);
     },
+
+    getLastIF: function () {
+        return Math.floor(this.lastintervalFactor);  //Use last IF and not decrease each round  @R0.20.1
+    },
+
 
     getNumberOfEncounters: function () {
         return this.nbOfEncounters;
@@ -568,6 +581,7 @@ var dic1 = {};
 var deckRemainingCharacters = {};
 var deckSession = {};
 var stats = {};
+var lastsavedate = 0;
 
 function SH_initDic() {
 
@@ -633,7 +647,7 @@ function UI_Update() {
         document.querySelector("#translation").innerHTML = wordtemp.getTranslation();
         document.querySelector("#nextSession").disabled = true;
         document.querySelector("#EF").innerHTML = wordtemp.getEF();
-        document.querySelector("#IF").innerHTML = wordtemp.getIF();
+        document.querySelector("#IF").innerHTML = wordtemp.getLastIF(); //Display last IF instead of IF to fix bug @R0.20.1
     }
       document.querySelector("#countans0").innerHTML = stats.getnbAnswersPerScore(0);
       document.querySelector("#countans1").innerHTML = stats.getnbAnswersPerScore(1);
@@ -686,8 +700,9 @@ function loadSession() {
 
         ind++;
         if (ind == 5) {
+              UI_logStatusBar("Progress loaded successfully - " +  new Date(lastsavedate));
           SH_initNewSession();
-          UI_logStatusBar("Progress saved successfully - " + lastsavedate[date]);
+
       }});
 
 
@@ -701,8 +716,9 @@ function loadSession() {
         deckSession.currentword = deckSession.listofcards[deckSession.index];
         ind++;
         if (ind == 5) {
+              UI_logStatusBar("Progress loaded successfully - " + new Date(lastsavedate));
           SH_initNewSession();
-          UI_logStatusBar("Progress saved successfully - " + llastsavedate[date]);
+
       }});
 
 
@@ -715,8 +731,8 @@ function loadSession() {
         deckRemainingCharacters.currentword = deckRemainingCharacters.listofcards[deckRemainingCharacters.index];
         ind++;
         if (ind == 5) {
+              UI_logStatusBar("Progress loaded successfully - " + new Date(lastsavedate));
           SH_initNewSession();
-          UI_logStatusBar("Progress saved successfully - " + lastsavedate[date]);
       }});
 
 
@@ -729,16 +745,17 @@ chrome.storage.local.get("st", function(data) {
     stats.__proto__ = RecordsStats.prototype;
     ind++;
     if (ind == 5) {
+          UI_logStatusBar("Progress loaded successfully - " + new Date(lastsavedate));
       SH_initNewSession();
-      UI_logStatusBar("Progress saved successfully - " + lastsavedate[date]);
   }});
 
 
 chrome.storage.local.get("date", function(data) {
+    lastsavedate = data.date;
     ind++;
     if (ind == 5) {
+          UI_logStatusBar("Progress loaded successfully " + new Date(lastsavedate));   //Fixed the date format when loading session.  @R0.20.1
       SH_initNewSession();
-      UI_logStatusBar("Progress saved successfully - " + data.date);
   }});
 }
 
