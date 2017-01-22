@@ -3,7 +3,7 @@
   "name": "XiaoMiantiao",
   "short_name": "XM",
   "description": "A short description",
-  "version": "0.20.1",
+  "version": "0.20.999",
   "minimum_chrome_version": "38",
 
   "icons": {
