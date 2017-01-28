@@ -15,25 +15,62 @@
 // Registering events for various buttons
 
 window.onload = function() {
-     document.getElementById("addbutton").addEventListener("click",SH_initDic);
+    document.getElementById("addbutton").addEventListener("click", SH_initDic);
     document.getElementById("saveSession").addEventListener("click", saveSession);
-     document.getElementById("loadSession").addEventListener("click", loadSession);
-     document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
-  //   document.getElementById("frontcard").addEventListener("click", UI_switchCard);
-  //  document.getElementById("chartobreak").addEventListener("click", UI_printKP);
-    document.getElementById("answer0").addEventListener("click", function() {SH_movetoNextWord(0);});
-    document.getElementById("answer1").addEventListener("click", function() {SH_movetoNextWord(1);});
-    document.getElementById("answer2").addEventListener("click", function() {SH_movetoNextWord(2);});
-   document.getElementById("answer3").addEventListener("click", function() {SH_movetoNextWord(3);});
-    document.getElementById("answer4").addEventListener("click", function() {SH_movetoNextWord(4);});
-    document.getElementById("answer5").addEventListener("click", function() {SH_movetoNextWord(5);});
-   document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
-      $('.fixed-action-btn.toolbar').openToolbar();
-    UI_getRandomChinaPic() ;
+    document.getElementById("loadSession").addEventListener("click", loadSession);
+    document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
+    //   document.getElementById("frontcard").addEventListener("click", UI_switchCard);
+    //  document.getElementById("chartobreak").addEventListener("click", UI_printKP);
+    document.getElementById("answer0").addEventListener("click", function() {
+        SH_movetoNextWord(0);
+    });
+    document.getElementById("answer1").addEventListener("click", function() {
+        SH_movetoNextWord(1);
+    });
+    document.getElementById("answer2").addEventListener("click", function() {
+        SH_movetoNextWord(2);
+    });
+    document.getElementById("answer3").addEventListener("click", function() {
+        SH_movetoNextWord(3);
+    });
+    document.getElementById("answer4").addEventListener("click", function() {
+        SH_movetoNextWord(4);
+    });
+    document.getElementById("answer5").addEventListener("click", function() {
+        SH_movetoNextWord(5);
+    });
+    document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
+
+    document.getElementById("choiceintro1").addEventListener("mouseover", function() {
+        UI_lightencolor("choiceintro1");
+    });
+    document.getElementById("choiceintro2").addEventListener("mouseover", function() {
+        UI_lightencolor("choiceintro2");
+    });
+    document.getElementById("choiceintro3").addEventListener("mouseover", function() {
+        UI_lightencolor("choiceintro3");
+    });
+    document.getElementById("choiceintro4").addEventListener("mouseover", function() {
+        UI_lightencolor("choiceintro4");
+    });
+    document.getElementById("choiceintro1").addEventListener("mouseout", function() {
+        UI_darkencolor("choiceintro1");
+    });
+    document.getElementById("choiceintro2").addEventListener("mouseout", function() {
+        UI_darkencolor("choiceintro2");
+    });
+    document.getElementById("choiceintro3").addEventListener("mouseout", function() {
+        UI_darkencolor("choiceintro3");
+    });
+    document.getElementById("choiceintro4").addEventListener("mouseout", function() {
+        UI_darkencolor("choiceintro4");
+    });
+
+    $('.fixed-action-btn.toolbar').openToolbar();
+    UI_getRandomChinaPic();
 
 
 };
-
 
 Number.prototype.round = function(decimals) { //get a function to round at 2 decimals - @R0.20.1
     return Number((Math.round(this + "e" + decimals)  + "e-" + decimals));
@@ -933,3 +970,28 @@ function UI_getRandomChinaPic() {
          var rnd = Math.floor(Math.random() * 8)+1;
          document.getElementById('cardimage').src="../assets/china"+rnd+".png";
  }
+
+function UI_lightencolor(id) {
+
+    var name = document.getElementById(id).className;
+    var name2="";
+    name2 = name.replace('darken-2', 'lighten-1');
+    document.getElementById(id).className = name2;
+}
+function UI_darkencolor(id) {
+  var name = document.getElementById(id).className;
+  var name2="";
+    name2 = name.replace('lighten-1', 'darken-2');
+    document.getElementById(id).className = name2;
+
+}
+// fonction UI_showMainPage_HideIntro() {
+//    var intro = document.getElementById("newpost");
+//
+//    if (div.style.display !== "none") {
+//           div.style.display = "none";
+//   }
+//   else {
+//       div.style.display = "block";
+//   }
+// }
