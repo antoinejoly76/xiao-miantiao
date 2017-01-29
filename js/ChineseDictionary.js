@@ -13,12 +13,14 @@
  */
 
 // Registering events for various buttons
+var seconds = 0, minutes = 0, hours = 0;
+var t=0;
 
 window.onload = function() {
-    document.getElementById("addbutton").addEventListener("click", SH_initDic);
-    document.getElementById("saveSession").addEventListener("click", saveSession);
-    document.getElementById("loadSession").addEventListener("click", loadSession);
-    document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
+     document.getElementById("choiceintro2").addEventListener("click", SH_initDic);
+    // document.getElementById("saveSession").addEventListener("click", saveSession);
+     document.getElementById("choiceintro1").addEventListener("click", loadSession);
+    // document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
     //   document.getElementById("frontcard").addEventListener("click", UI_switchCard);
     //  document.getElementById("chartobreak").addEventListener("click", UI_printKP);
     document.getElementById("answer0").addEventListener("click", function() {
@@ -39,7 +41,7 @@ window.onload = function() {
     document.getElementById("answer5").addEventListener("click", function() {
         SH_movetoNextWord(5);
     });
-    document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
+    //document.getElementById("nextSession").addEventListener("click", SH_initNewSession);
 
     document.getElementById("choiceintro1").addEventListener("mouseover", function() {
         UI_lightencolor("choiceintro1");
@@ -68,7 +70,8 @@ window.onload = function() {
 
     $('.fixed-action-btn.toolbar').openToolbar();
     UI_getRandomChinaPic();
-
+    UI_startTime();
+    timer();
 
 };
 
@@ -644,6 +647,7 @@ function SH_initNewSession() {
     stats.resetSessionStats();
     wordtemp = deckSession.getCurrentWord();
     wordtemp.addEncounter();
+    UI_showMainPage_HideIntro();
     UI_Update();
     UI_logStatusBar("Next session initiated successfully");
 }
@@ -658,7 +662,7 @@ function SH_movetoNextWord(status) {
         // stats.updateEncountered(wordtemp, oldEF);
 
         deckSession.removeWord(wordtemp);
-
+        saveSession(); // Auto save
         if (!deckSession.hasCardsRemaining()) {
               UI_EndSession();
         } else {
@@ -682,7 +686,7 @@ function UI_Update() {
         document.querySelector("#answer").innerHTML = wordtemp.getWord();
         document.querySelector("#pinyin").innerHTML = wordtemp.getPinyin();
         document.querySelector("#translation").innerHTML = wordtemp.getTranslation();
-        document.querySelector("#nextSession").disabled = true;
+        // document.querySelector("#nextSession").disabled = true;
         document.querySelector("#EF").innerHTML = wordtemp.getEF();
         document.querySelector("#IF").innerHTML = wordtemp.getLastIF(); //Display last IF instead of IF to fix bug @R0.20.1
     }
@@ -985,13 +989,44 @@ function UI_darkencolor(id) {
     document.getElementById(id).className = name2;
 
 }
-// fonction UI_showMainPage_HideIntro() {
-//    var intro = document.getElementById("newpost");
-//
-//    if (div.style.display !== "none") {
-//           div.style.display = "none";
-//   }
-//   else {
-//       div.style.display = "block";
-//   }
-// }
+
+function UI_startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    m = UI_checkTime(m);
+    document.getElementById('time').innerHTML =  h + ":" + m;
+    var t = setTimeout(UI_startTime, 500);
+}
+
+function UI_addTimer() {
+  seconds++;
+  if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+      if (minutes >= 60) {
+          minutes = 0;
+          hours++;
+      }
+  }
+
+  document.getElementById('timer').innerHTML = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+  timer();
+}
+
+function UI_checkTime(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    // add zero in front of numbers < 10
+    return i;
+}
+
+function timer() {
+    t = setTimeout(UI_addTimer, 1000);
+}
+
+function UI_showMainPage_HideIntro() {
+       document.getElementById("intropage").style.display = "none";
+       document.getElementById("mainpage").style.display = "block";
+}

@@ -34,6 +34,13 @@
   font-feature-settings: 'liga';
 }
 
+#mainpage {
+  display: none;
+}
+
+#intropage {
+  margin-top: 15rem;
+}
 .answerbutton {
    padding: 0 1rem;
 }
