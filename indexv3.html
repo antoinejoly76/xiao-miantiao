@@ -18,7 +18,7 @@
         <img id="logo" src="../assets/XMlogo.png" class="brand-logo"></img>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="#"><i class="material-icons left">query_builder</i><span id="time">New session</span></a></li>
-            <li><a href="#"><i class="material-icons left">alarm</i><span id="timer">New session</span></a></li>
+            <li><a href="#"><i class="material-icons left">alarm</i><span id="timer"></span></a></li>
 
         </ul>
     </div>
@@ -33,25 +33,30 @@
             <div class="col s3">
                 <div id="choiceintro1" class="center promo promo-example red darken-2">
                     <i class="material-icons">restore</i>
-                    <p class="white-text p promo-caption">Continue</p>
+                    <p class="white-text promo-caption">Continue</p>
+                    <p id="lastsavedate" class="light center">No saved session record available</p>
                 </div>
             </div>
             <div class="col s3">
                 <div id="choiceintro2" class="center promo promo-example red darken-2">
                     <i class="material-icons">create</i>
-                    <p class="white-text p promo-caption">New session</p>
+                    <p class="white-text promo-caption">New session</p>
+                    <p id="newsessiondesc" class="light center">Start a new deck from scratch</p>
                 </div>
             </div>
             <div class="col s3">
                 <div id="choiceintro3" class="center promo promo-example red darken-2">
                     <i class="material-icons">assessment</i>
                     <p class="white-text promo-caption">Stats</p>
+                    <p id="newsessiondesc" class="light center">Not available in alpha</p>
                 </div>
             </div>
             <div class="col s3">
                 <div id="choiceintro4" class="center promo promo-example red darken-2">
                     <i class="material-icons">settings</i>
                     <p class="white-text promo-caption">Settings</p>
+                    <p id="newsessiondesc" class="light center">Not available in alpha</p>
+                </div>
                 </div>
             </div>
         </div>
@@ -64,8 +69,7 @@
                         <img id="cardimage" class="center-align" src="assets/icon128.png">
                     </div>
                     <div class="card-content">
-                        <h2 id="table" class="card-title activator grey-text text-darken-4">面条</h2>
-
+                        <span id="table" class="activator grey-text text-darken-4">面条</span>
                     </div>
                     <div class="card-reveal">
                         <span id="answer" class="card-title grey-text text-darken-4">面条<i class="material-icons right">close</i></i></span>
