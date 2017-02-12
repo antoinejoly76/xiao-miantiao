@@ -598,9 +598,10 @@ CharacterKP.prototype = {
         return this.cat3;
     },
 
-    getTone: function {
+    getTone: function() {
 
-    }
+    },
+
     print: function() {
         str = "";
         str += "Character :" + this.getCharacter() + "<br>";
@@ -692,7 +693,7 @@ function UI_Update() {
         document.querySelector("#nextSession").disabled = false;
     } else {
         document.querySelector("#table").innerHTML = wordtemp.getWord();
-        document.querySelector("#answer").innerHTML = wordtemp.getWord();
+        document.querySelector("#answer").innerHTML = SH_displayChars_answer(wordtemp); //CHANGED noved the display of word answer as a sequence of character objects
         document.querySelector("#pinyin").innerHTML = wordtemp.getPinyin();
         document.querySelector("#translation").innerHTML = wordtemp.getTranslation();
         // document.querySelector("#nextSession").disabled = true;
@@ -714,25 +715,25 @@ function saveSession() {
         ds: deckSession
     }, function() {
         ind++;
-        if (ind == 4) UI_logStatusBar("Progress saved successfully");
+        // if (ind == 4) UI_logStatusBar("Progress saved successfully"); TODO remove this or find a better way of doing this
     });
     chrome.storage.local.set({
         dr: deckRemainingCharacters
     }, function() {
         ind++;
-        if (ind == 4) UI_logStatusBar("Progress saved successfully");
+        // if (ind == 4) UI_logStatusBar("Progress saved successfully");
     });
     chrome.storage.local.set({
         dic: dic1
     }, function() {
         ind++;
-        if (ind == 4) UI_logStatusBar("Progress saved successfully");
+        // if (ind == 4) UI_logStatusBar("Progress saved successfully");
     });
     chrome.storage.local.set({
         st: stats
     }, function() {
         ind++;
-        if (ind == 4) UI_logStatusBar("Progress saved successfully");
+        // if (ind == 4) UI_logStatusBar("Progress saved successfully");
     });
     lastsavedate = {
         date: Date.now()
@@ -827,7 +828,13 @@ function loadSession() {
 function loadSaveDate() {
     chrome.storage.local.get("date", function(data) {
         lastsavedate = data.date;
-        document.getElementById("lastsavedate").innerHTML = new Date(lastsavedate);
+        if (lastsavedate) {
+            document.getElementById("lastsavedate").innerHTML = new Date(lastsavedate);
+            UI_enablecolor("choiceintro1");
+        } else {
+            document.getElementById("choiceintro1").disabled = true;
+            UI_disablecolor("choiceintro1");
+        }
     });
 }
 
@@ -837,22 +844,15 @@ function UI_showCharDetails(chartext1) {
 }
 
 
-
-function UI_displayChars_answer(Word1) {
+function SH_displayChars_answer(Word1) {
     wordtemp = deckSession.getCurrentWord();
     var strInner = "";
     for (var i = 0; i < wordtemp.characters.length; i++) {
         var character1 = dic1.getCharacter(wordtemp.characters[i]);
-        strtemp = '<span class="characterans">';
-        strtemp += character1.getCharacter();
-        strtemp += "</span>";
-        strInner += strtemp;
+        var tone = SH_findtone(character1);
+        var colortext = UI_colorchar(tone);
+        strInner += '<span class="' + colortext + '">' + character1.getCharacter() + '</span>';
     }
-    strtemp = '<div class "backother"><span class="otherans">' + wordtemp.getPinyin() + '</span>';
-    strtemp += '<span class="otherans">' + wordtemp.getTranslation() + '</span></div>'
-    strInner += strtemp;
-
-
     return strInner;
 }
 
@@ -1028,8 +1028,9 @@ function UI_printKP() {
 }
 
 function UI_getRandomChinaPic() {
-    var rnd = Math.floor(Math.random() * 8) + 1;
-    document.getElementById('cardimage').src = "../assets/china" + rnd + ".png";
+    var number_pics = 4;// NOTE To be updated when adding new pictures
+    var rnd = Math.floor(Math.random() * (number_pics - 1)) + 1;
+    document.getElementById('cardimage').src = "../assets/china" + rnd + ".jpg";
 }
 
 function UI_lightencolor(id) {
@@ -1045,9 +1046,35 @@ function UI_darkencolor(id) {
     var name2 = "";
     name2 = name.replace('lighten-1', 'darken-2');
     document.getElementById(id).className = name2;
-
 }
 
+function UI_disablecolor(id) {
+    var name = document.getElementById(id).className;
+    var name2 = "";
+    name2 = name.replace('red', 'blue-grey');
+    document.getElementById(id).className = name2;
+}
+
+function UI_enablecolor(id) {
+    var name = document.getElementById(id).className;
+    var name2 = "";
+    name2 = name.replace('blue-grey', 'red');
+    document.getElementById(id).className = name2;
+}
+
+function UI_colorchar(tone) {
+  if (tone == 1)
+    return "red-text";
+  else if (tone == 2)
+    return "amber-text";
+  else if (tone == 3)
+    return "green-text";
+  else if (tone == 4)
+    return "blue-text";
+  else
+    return "grey-text";
+
+}
 function UI_startTime() {
     var today = new Date();
     var h = today.getHours();
@@ -1088,3 +1115,22 @@ function UI_showMainPage_HideIntro() {
     document.getElementById("intropage").style.display = "none";
     document.getElementById("mainpage").style.display = "block";
 }
+
+function SH_findtone(c) {
+    var first_tone_pattern = /[ūǖōāēī]/;
+    var second_tone_pattern = /[éóúáí]/;
+    var third_tone_pattern = /[ǎǐǒǔǚ]/;
+    var fourth_tone_pattern = /[àùìèò]/;
+
+    var pin = c.getPinyin();
+
+    if (pin.search(first_tone_pattern) > -1)
+        return 1;
+    else if (pin.search(second_tone_pattern) > -1)
+        return 2;
+    else if (pin.search(third_tone_pattern) > -1)
+        return 3;
+    else if (pin.search(fourth_tone_pattern) > -1)
+        return 4;
+    return 0;
+  }
